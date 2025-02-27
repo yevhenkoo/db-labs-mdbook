@@ -1,7 +1,13 @@
 # Виконали
 
-*студент(-ка) 2-го курсу, групи (шифр групи)* **[Імʼя Прізвище]**\
-Telegram: [@a_boldak](https://t.me/a_boldak)  
+*студентка 2-го курсу, групи ІО-32* **Софія Куліченко**  Telegram: [@SonikLvl](https://t.me/SonikLvl)  
+*студент 2-го курсу, групи ІО-32* **Євгеній Оніщенко**  Telegram: [@yevgenk0](https://t.me/yevgenk0)
+*студент 2-го курсу, групи ІО-32* **Іван Браславець**  Telegram: [@kittenlord](https://t.me/kittenlord)
+*студент 2-го курсу, групи ІО-32* **Назар Комарецький**  Telegram: [@nazar_kom](https://t.me/nazar_kom)
+*студент 2-го курсу, групи ІО-32* **Вадим Малиш**  Telegram: [](https://t.me/)
+*студент 2-го курсу, групи ІО-32* **Микита Панов**  Telegram: [@PaKinini](https://t.me/PaKinini)
+*студент 2-го курсу, групи ІО-32* **Павло Рогаткін**  Telegram: [@davidoff003](https://t.me/davidoff003)
+
 
 # Керівник
 
