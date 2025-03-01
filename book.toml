@@ -7,7 +7,7 @@ src = "docs"
 authors = ["Sofia Kulichenko", "Yevheniy Onischenko", "Ivan Braslavets", "Nazar Komaretskyi", "Vadim Malish", "Mykyta Panov", "Pavlo Rogatkin"]
 
 # Змініть назву проєкта на свою
-title = "Система управління проектами"
+title = "OmezhkaControl"
 
 [preprocessor.plantuml]
 plantuml-cmd = "http://www.plantuml.com/plantuml"
