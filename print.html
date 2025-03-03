@@ -666,117 +666,149 @@
 </ul>
 <p>У ході аналізу систем управління проєктами було створено наступні бізнес-сценарії взаємодії бізнес-акторів та бізнес-робітників між собою та системою:</p>
 <h3 id="Створення-користувача-usersignin"><a class="header" href="#Створення-користувача-usersignin">Створення користувача (UserSignIn)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>UserSignIn</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Створити користувача</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Користувач, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Система не зареєструвала користувача</td></tr>
-<tr><td><strong>Результат</strong></td><td>Створений обліковий запис користувача</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Не введено ім'я (<code>NullUsernameException</code>)</td></tr>
-<tr><td></td><td>- Не введено пошту (<code>NullEmailException</code>)</td></tr>
-<tr><td></td><td>- Пароль заслабкий (<code>WeakPasswordException</code>)</td></tr>
-<tr><td></td><td>- Користувач заєрестрований (<code>UserAlreadyExistsException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає "Зареєструватися"</td></tr>
-<tr><td></td><td>2. Заповнює поля (ім'я, пошта, пароль)</td></tr>
-<tr><td></td><td>3. Система перевіряє наявність облікового запису користувача (можливе UserAlreadyExistsException)</td></tr>
-<tr><td></td><td>4. Система створює новий обліковий запис</td></tr>
-<tr><td></td><td>5. Користувач переходить у новий обліковий запис</td></tr>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserSignIn</code></th></tr></thead><tbody>
+<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign In)</td></tr>
+<tr><td><strong>Учасники:</strong></td><td>Користувач (учасник команди або розробник), система</td></tr>
+<tr><td><strong>Передумови:</strong></td><td>Користувач не має облікового запису в системі</td></tr>
+<tr><td><strong>Результат:</strong></td><td>Створено новий обліковий запис користувача</td></tr>
+<tr><td><strong>Виключні ситуації:</strong></td><td>- Якщо не заповнені обов'язкові поля реєстрації — <code>NullReferenceException</code><br>- Якщо обліковий запис уже існує — <code>UserAlreadyExistsException</code><br>- Якщо пароль не відповідає вимогам безпеки (A-Z, a-z, 0-9, !-*, мінімум 8 символів) — <code>NotStrongPasswordException</code></td></tr>
+<tr><td><strong>Основний сценарій:</strong></td><td><br>1. Користувач натискає кнопку "Створити обліковий запис"<br>2. Користувач заповнює реєстраційну форму<br>3. Користувач натискає кнопку "Зареєструватися"<br>4. Система перевіряє коректність введених даних<br>   – Якщо дані некоректні, генерується <code>NullReferenceException</code> або <code>NotStrongPasswordException</code><br>5. Система перевіряє, чи існує обліковий запис із такими даними<br>   – Якщо запис уже існує, генерується <code>UserAlreadyExistsException</code><br>6. Якщо всі перевірки успішні, система створює новий обліковий запис<br>7. Користувач переходить до свого новоствореного облікового запису</td></tr>
+</tbody></table>
+</div>
+<h3 id="Створення-користувача-github-usergithubsignin"><a class="header" href="#Створення-користувача-github-usergithubsignin">Створення користувача GitHub (UserGitHubSignIn)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserGitHubSignIn</code></th></tr></thead><tbody>
+<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign In) за допомогою GitHub API</td></tr>
+<tr><td><strong>Учасники:</strong></td><td>Користувач (учасник команди або розробник), система</td></tr>
+<tr><td><strong>Передумови:</strong></td><td>Користувач не має облікового запису в системі</td></tr>
+<tr><td><strong>Результат:</strong></td><td>Створено обліковий запис користувача (на основі інформації з GitHub профілю користувача)</td></tr>
+<tr><td><strong>Виключні ситуації:</strong></td><td>- Користувач не має облікового запису GitHub (помилки обробляє GitHub API)<br>- Обліковий запис (створений через GitHub API) уже існує в системі — <code>UserAlreadyExistsException</code></td></tr>
+<tr><td><strong>Основний сценарій:</strong></td><td><br>1. Користувач натискає кнопку "Створити обліковий запис"<br>2. Користувач обирає варіант "Зареєструватися за допомогою GitHub"<br>3. Користувач авторизується через GitHub (натискає на свій обліковий запис або вводить дані облікового запису)<br>4. Система перевіряє наявність облікового запису користувача (у разі наявності — <code>UserAlreadyExistsException</code>)<br>5. Якщо перевірка успішна, система створює новий обліковий запис<br>6. Користувач переходить до свого новоствореного облікового запису</td></tr>
 </tbody></table>
 </div>
 <h3 id="Авторизація-користувача-userlogin"><a class="header" href="#Авторизація-користувача-userlogin">Авторизація користувача (UserLogIn)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>AuthorizeUser</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Авторизувати користувача</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Користувач, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач зареєстрований у системі</td></tr>
-<tr><td></td><td>Користувач не авторизований у системі</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система створює сеанс доступу користувачу</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Неправильний пароль (<code>InvalidPasswordException</code>)</td></tr>
-<tr><td></td><td>- Користувач заблокований (<code>UserBannedException</code>)</td></tr>
-<tr><td></td><td>- Користувач не зареєстрований у системі (<code>NullInstanceException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач вводить дані авторизації</td></tr>
-<tr><td></td><td>2. Система перевіряє наявність облікового запису користувача (можливе NullInstanceException)</td></tr>
-<tr><td></td><td>3. Система перевіряє введені дані</td></tr>
-<tr><td></td><td>4. У разі успіху надає доступ до системи</td></tr>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserLogIn</code></th></tr></thead><tbody>
+<tr><td><strong>Назва:</strong></td><td>Авторизація користувача (Log In)</td></tr>
+<tr><td><strong>Учасники:</strong></td><td>Користувач (учасник команди або робітник), система</td></tr>
+<tr><td><strong>Передумови:</strong></td><td>- Користувач зареєстрований у системі<br>- Користувач не авторизований у системі</td></tr>
+<tr><td><strong>Результат:</strong></td><td>Новий сеанс роботи користувача</td></tr>
+<tr><td><strong>Виключні ситуації:</strong></td><td>- У формі авторизації не заповнені одне або більше полів — <code>NullReferenceException</code><br>- Користувач не зареєстрований у системі — <code>NullInstanceException</code><br>- Користувач ввів неправильний пароль — <code>WrongPasswordException</code></td></tr>
+<tr><td><strong>Основний сценарій:</strong></td><td><br>1. Користувач вводить дані для авторизації<br>2. Користувач натискає кнопку "Увійти"<br>   – Якщо дані не заповнені, система генерує <code>NullReferenceException</code><br>3. Система перевіряє наявність облікового запису користувача<br>   – Якщо запис відсутній, система генерує <code>NullInstanceException</code><br>4. Система перевіряє правильність введеного пароля<br>   – У разі помилки система генерує <code>WrongPasswordException</code><br>5. Якщо всі перевірки успішні, система авторизує користувача</td></tr>
 </tbody></table>
 </div>
-<h3 id="Редагування-користувача-edituser"><a class="header" href="#Редагування-користувача-edituser">Редагування користувача (EditUser)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>EditUser</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Редагувати профіль користувача</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Користувач, адміністратор, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач авторизований у системі</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система змінює профіль користувача</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Недостатньо прав (<code>InsufficientPermissionsException</code>)</td></tr>
-<tr><td></td><td>- Некоректний формат паролю (<code>WeakPasswordException</code>)</td></tr>
-<tr><td></td><td>- Некоректний формат даних (<code>InvalidDataFormatException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває свій профіль</td></tr>
-<tr><td></td><td>2. Вносить зміни (ім'я, email тощо)</td></tr>
-<tr><td></td><td>3. Система перевіряє дані і права та зберігає оновлення</td></tr>
+<h3 id="Редагування-даних-користувача-edituser"><a class="header" href="#Редагування-даних-користувача-edituser">Редагування даних користувача (EditUser)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>EditUser</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Редагувати дані користувача</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (адміністратор системи, тімлід, або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач зареєстрований у системі з даними, введеними при реєстрації (для змін даних через GitHubApi потрібно змінити дані у самому GitHub) <br> - Користувач бажає змінити дані облікового запису <br> - Користувач авторизований у системі</td></tr>
+<tr><td><strong>Результат</strong></td><td>Користувач має відредагований профіль</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Пароль не відповідає вимогам "надійного паролю" (<code>NotStrongPasswordException</code>) <br> - Поле змінено на пусте значення (<code>NullReferenceException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає на "Редагувати профіль" <br> 2. Обирає поле для зміни (Ім'я, Прізвище, Вік, Стать, Компанія, Місце навчання, Пароль) <br> 3. Вносить зміни та натискає "Зберегти зміни" <br> 4. Система записує зміни у профіль користувача <br> 5. Користувач переходить до оновленого облікового запису</td></tr>
 </tbody></table>
 </div>
 <h3 id="Видалення-користувача-deleteuser"><a class="header" href="#Видалення-користувача-deleteuser">Видалення користувача (DeleteUser)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>DeleteUser</code></td></tr>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>DeleteUser</code></th></tr></thead><tbody>
 <tr><td><strong>Назва</strong></td><td>Видалити користувача</td></tr>
 <tr><td><strong>Учасники</strong></td><td>Адміністратор, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач зареєстрований у системі</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система видаляє користувача</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Користувача не знайдено (<code>UserNotFoundException</code>)</td></tr>
-<tr><td></td><td>- Недостатньо прав (<code>InsufficientPermissionsException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор відкриває список користувачів</td></tr>
-<tr><td></td><td>2. Вибирає користувача для видалення</td></tr>
-<tr><td></td><td>3. Система перевіряє права та видаляє обліковий запис</td></tr>
+<tr><td><strong>Передумови</strong></td><td>Адміністратор авторизований у системі</td></tr>
+<tr><td><strong>Результат</strong></td><td>Користувач видалений із системи</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Користувача не знайдено (<code>UserNotFoundException</code>) <br> - Недостатньо прав для видалення (<code>InsufficientPermissionsException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Адміністратор обирає користувача для видалення <br> 2. Натискає кнопку "Видалити користувача" <br> 3. Система перевіряє права адміністратора (можлива помилка <code>InsufficientPermissionsException</code>) <br> 4. Система видаляє користувача (можлива помилка <code>UserNotFoundException</code>)</td></tr>
 </tbody></table>
 </div>
 <h2 id="Операції-з-проєктами"><a class="header" href="#Операції-з-проєктами">Операції з проєктами</a></h2>
-<h3 id="Створення-проєкту-createproject"><a class="header" href="#Створення-проєкту-createproject">Створення проєкту (CreateProject)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>CreateProject</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Створити проєкт</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Користувач, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач авторизований</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система створює новий проєкт</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Існуюча назва (<code>NotUniqueProjectName</code>)</td></tr>
-<tr><td></td><td>- Відсутня назва (<code>NullProjectNameException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає "Створити проєкт"</td></tr>
-<tr><td></td><td>2. Користувач заповнює поля</td></tr>
-<tr><td></td><td>3. Система перевіряє дані та створює проєкт</td></tr>
+<h3 id="Створення-проекту-createproject"><a class="header" href="#Створення-проекту-createproject">Створення проекту (CreateProject)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>CreateProject</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Створити проект</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований</td></tr>
+<tr><td><strong>Результат</strong></td><td>Новий проект створений</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Проект з таким іменем вже існує (<code>NotUniqueProjectName</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач переходить до меню управління проектами <br> 2. Натискає "Створити новий проект" <br> 3. Заповнює інформацію про проект <br> 4. Натискає "Створити" (можлива помилка <code>NotUniqueProjectName</code>) <br> 5. Система створює проект <br> 6. Система відкриває новостворений проект</td></tr>
 </tbody></table>
 </div>
-<h3 id="Редагування-проєкту-editproject"><a class="header" href="#Редагування-проєкту-editproject">Редагування проєкту (EditProject)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>EditProject</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Редагувати проєкт</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Керівник проєкту, адміністратор, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач має права редагування</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система оновлює дані проєкту</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Проєкт не знайдено (<code>ProjectNotFoundException</code>)</td></tr>
-<tr><td></td><td>- Недостатньо прав (<code>AccessDeniedException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває проєкт</td></tr>
-<tr><td></td><td>2. Користувач вносить зміни</td></tr>
-<tr><td></td><td>3. Система перевіряє дані та зберігає оновлення</td></tr>
+<h3 id="Редагування-проекту-editproject"><a class="header" href="#Редагування-проекту-editproject">Редагування проекту (EditProject)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>EditProject</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Редагувати проект</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (керівник проекту), адміністратор, система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач має права на редагування проекту</td></tr>
+<tr><td><strong>Результат</strong></td><td>Дані проекту успішно змінені</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Проект не знайдено (<code>ProjectNotFoundException</code>) <br> - Недостатньо прав для редагування (<code>AccessDeniedException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває проект <br> 2. Натискає кнопку "Редагувати" <br> 3. Вносить зміни до проекту <br> 4. Система перевіряє права на редагування <br> 5. Система зберігає зміни</td></tr>
 </tbody></table>
 </div>
-<h3 id="Видалення-проєкту-deleteproject"><a class="header" href="#Видалення-проєкту-deleteproject">Видалення проєкту (DeleteProject)</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Поле</th><th>Опис</th></tr></thead><tbody>
-<tr><td><strong>ID</strong></td><td><code>DeleteProject</code></td></tr>
-<tr><td><strong>Назва</strong></td><td>Видалити проєкт</td></tr>
-<tr><td><strong>Учасники</strong></td><td>Керівник проєкту, адміністратор, система</td></tr>
-<tr><td><strong>Передумови</strong></td><td>Користувач має права на видалення</td></tr>
-<tr><td><strong>Результат</strong></td><td>Система видаляє проєкт</td></tr>
-<tr><td><strong>Виключні ситуації</strong></td><td>- Проєкт не знайдено (<code>ProjectNotFoundException</code>)</td></tr>
-<tr><td></td><td>- Недостатньо прав (<code>AccessDeniedException</code>)</td></tr>
-<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває проєкт</td></tr>
-<tr><td></td><td>2. Користувач натискає "Видалити"</td></tr>
-<tr><td></td><td>3. Система перевіряє права та видаляє проєкт</td></tr>
+<h3 id="Видалення-проекту-deleteproject"><a class="header" href="#Видалення-проекту-deleteproject">Видалення проекту (DeleteProject)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>DeleteProject</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Видалити проект</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Проект ще не був видалений</td></tr>
+<tr><td><strong>Результат</strong></td><td>Проект успішно видалений</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Користувач не пройшов перевірку на підтвердження вибору (<code>NotConfirmedActionException</code>) <br> - Користувач скасував дію (<code>CancelException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач переходить до меню управління проектами <br> 2. Обирає меню дій для потрібного проекту <br> 3. Натискає "Видалити проект" <br> 4. Система відкриває вікно підтвердження видалення (можливі помилки <code>NotConfirmedActionException</code>, <code>CancelException</code>) <br> 5. Користувач підтверджує видалення, натискаючи "Видалити" <br> 6. Система видаляє проект</td></tr>
 </tbody></table>
 </div>
-<p><em>Кількість сценаріїв визначається у відповідності до специфіки завдання та необхідного
-рівня деталізації (зазвичай, 5-6 сценаріїв).</em></p>
+<h3 id="Додавання-учасника-до-проекту-addmembertoproject"><a class="header" href="#Додавання-учасника-до-проекту-addmembertoproject">Додавання учасника до проекту (AddMemberToProject)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>AddMemberToProject</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Додати учасника до проекту</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (керівник проекту), адміністратор, система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач має права на редагування проекту</td></tr>
+<tr><td><strong>Результат</strong></td><td>Учасник успішно доданий до проекту</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Користувача не знайдено (<code>UserNotFoundException</code>) <br> - Проект не знайдено (<code>ProjectNotFoundException</code>) <br> - Недостатньо прав для додавання учасника (<code>AccessDeniedException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває проект <br> 2. Натискає кнопку "Додати учасника" <br> 3. Вводить дані нового учасника <br> 4. Система перевіряє права на додавання учасника <br> 5. Система додає учасника до проекту</td></tr>
+</tbody></table>
+</div>
+<h3 id="Видалення-учасника-з-проекту-removememberfromproject"><a class="header" href="#Видалення-учасника-з-проекту-removememberfromproject">Видалення учасника з проекту (RemoveMemberFromProject)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>RemoveMemberFromProject</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Видалити учасника з проекту</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (керівник проекту), адміністратор, система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач має права на додавання учасників до проекту</td></tr>
+<tr><td><strong>Результат</strong></td><td>Учасник успішно видалений з проекту</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Учасника не знайдено (<code>MemberNotFoundException</code>) <br> - Проект не знайдено (<code>ProjectNotFoundException</code>) <br> - Недостатньо прав для видалення учасника (<code>AccessDeniedException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач відкриває проект <br> 2. Обирає учасника для видалення <br> 3. Натискає кнопку "Видалити" <br> 4. Система перевіряє права на видалення <br> 5. Система видаляє учасника з проекту</td></tr>
+</tbody></table>
+</div>
+<h2 id="Операції-з-тасками"><a class="header" href="#Операції-з-тасками">Операції з тасками</a></h2>
+<h3 id="Створення-завдання-createtask"><a class="header" href="#Створення-завдання-createtask">Створення завдання (CreateTask)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>CreateTask</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Створити завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач обрав проект</td></tr>
+<tr><td><strong>Результат</strong></td><td>Завдання успішно створене</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Не заповнені обов’язкові поля (<code>NoEssentialDataException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Створити завдання" <br> 2. Вводить назву завдання (обов’язково), опис, статус (todo/in progress/done/in review), призначеного користувача та дедлайн <br> 3. Натискає кнопку "Створити" <br> 4. Система перевіряє наявність обов’язкових полів (можлива помилка <code>NoEssentialDataException</code>) <br> 5. Система створює завдання та відображає його у відповідному розділі проекту <br> 6. Система повідомляє користувачів, яким було призначене завдання</td></tr>
+</tbody></table>
+</div>
+<h3 id="Редагування-завдання-edittask"><a class="header" href="#Редагування-завдання-edittask">Редагування завдання (EditTask)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>EditTask</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Редагувати завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач обрав завдання</td></tr>
+<tr><td><strong>Результат</strong></td><td>Завдання успішно відредаговане</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Не заповнені обов’язкові поля (<code>NoEssentialDataException</code>) <br> - Завдання було видалено під час редагування (<code>TaskNotExistException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Редагувати завдання" <br> 2. Вносить зміни до завдання <br> 3. Натискає кнопку "Зберегти" (можлива помилка <code>TaskNotExistException</code>) <br> 4. Система перевіряє наявність обов’язкових полів (можлива помилка <code>NoEssentialDataException</code>) <br> 5. Система зберігає зміни та відображає відредаговане завдання <br> 6. Система повідомляє користувачів, яким було призначене завдання</td></tr>
+</tbody></table>
+</div>
+<h3 id="Видалення-завдання-deletetask"><a class="header" href="#Видалення-завдання-deletetask">Видалення завдання (DeleteTask)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>DeleteTask</code></th></tr></thead><tbody>
+<tr><td><strong>Назва</strong></td><td>Видалити завдання</td></tr>
+<tr><td><strong>Учасники</strong></td><td>Користувач (тімлід або робітник), система</td></tr>
+<tr><td><strong>Передумови</strong></td><td>- Користувач авторизований <br> - Користувач обрав завдання</td></tr>
+<tr><td><strong>Результат</strong></td><td>Завдання успішно видалене</td></tr>
+<tr><td><strong>Виключні ситуації</strong></td><td>- Користувач скасував дію (<code>CancelException</code>) <br> - Недостатньо прав для видалення завдання (<code>AccessDeniedException</code>)</td></tr>
+<tr><td><strong>Основний сценарій</strong></td><td>1. Користувач натискає кнопку "Видалити завдання" <br> 2. Система виводить вікно для підтвердження видалення <br> 3. Користувач натискає кнопку "Підтвердити" (можлива помилка <code>CancelException</code>) <br> 4. Система видаляє завдання (можлива помилка <code>AccessDeniedException</code>)</td></tr>
+</tbody></table>
+</div>
 <h2 id="Короткий-огляд-продукту"><a class="header" href="#Короткий-огляд-продукту">Короткий огляд продукту</a></h2>
-<p><em>[Визначається границя системи та категорії її користувачів. Дається загальна характеристика категорій користувачів
-системи]</em></p>
+<p>Система управління проектами (СУП) є структурованим набором процесів, методів, інструментів та ресурсів, які використовуються для планування, виконання, моніторингу та контролю проектів. Мета СУП — досягнення цілей проекту в рамках обмежень, таких як бюджет, час та ресурси.</p>
+<p>Duallo — це інструмент управління проектами, який спрощує створення проектів будь-якого масштабу. Він надає функції, що полегшують розробку проектів, ефективно організовуючи процеси їх керування.</p>
+<p>Основні категорії користувачів системи:</p>
+<ul>
+<li><strong>Project Manager (PM, тімлід)</strong>: Відповідає за планування, організацію та керування проектом. Адмініструє СУП та координує роботу всіх учасників проекту.</li>
+<li><strong>Команда розробників</strong>: Фахівці, які працюють над виконанням конкретних завдань у проекті. Використовують СУП для відстеження завдань, внесення звітів та спілкування з іншими учасниками.</li>
+<li><strong>Замовник</strong>: Особа або організація, яка ініціювала проект і визначає його вимоги та цілі. Використовує СУП для моніторингу прогресу та забезпечення відповідності проекту потребам.</li>
+<li><strong>Аналітики та керівництво</strong>: Використовують СУП для аналізу продуктивності проекту, прийняття рішень та розробки стратегій.</li>
+<li><strong>Користувачі проекту</strong>: Особи, які користуються результатами проекту (зацікавлені сторони).</li>
+</ul>
+<p>Duallo допомагає ефективно керувати проектами, забезпечуючи прозорість, контроль та комунікацію між усіма учасниками.</p>
 <p><em>[Нижче йде опис FURPS:]</em></p>
 <h2 id="Функціональність"><a class="header" href="#Функціональність">Функціональність</a></h2>
 <p><em>[Functionality (функциональні вимоги)]</em></p>
