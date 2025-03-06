@@ -8,7 +8,7 @@
 
 *студент 2-го курсу, групи ІО-32* **Назар Комарецький**  Telegram: [@nazar_kom](https://t.me/nazar_kom)
 
-*студент 2-го курсу, групи ІО-32* **Вадим Малиш**  Telegram: [](https://t.me/)
+*студент 2-го курсу, групи ІО-32* **Вадим Малиш**  Telegram: [@nutipotag](https://t.me/nutipotag)
 
 *студент 2-го курсу, групи ІО-32* **Микита Панов**  Telegram: [@PaKinini](https://t.me/PaKinini)
 
