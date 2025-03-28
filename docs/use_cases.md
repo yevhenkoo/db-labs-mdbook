@@ -11,60 +11,7 @@
    padding: 1em;"
 >
 
-![Diagram](http://www.plantuml.com/plantuml/png/dLNDQXDH5DxFKnpgGWLZDovBg8Y2e21KTsucpJMEJUQ6cGdTk4WQVroKjaXimH-GzWNIcB5fVj9NEFUD_Ev9qfdRq2uaS9bxVhvppdVEkLcF4pzA6hMg5sy5OTsF_1g5Eb5FT9WyqbKTqVRR856UvsyckApmRvxogJaqEppX0GzNo8y9XbM_f2CV9fxdDMArwSUALjPAnOsW4ZuDrrPBnTSX7t7ND3ar7TCoEwPfsjo3P8S7kEyBqipSGNYcAvS09zmpXtnkNOXxP5hM5RUKnwOj0DRQzN_fnrlF_T2lg3d8TqxpiOdFk8jB7-U49sQVnpmGhCpJ0NnS3f9NiOfcS20a5Ty_UKW1CuV4GvwYPCbohl_CNK5Vm82mF7zKY0h51G-keW45wbkILo7FSbrsoeVoFDjTAkaaqJNIRyYnfbiFbFrv7X5TRJNn68A_d99f4r_WksThv7CeODMKSgzoEqBjN-02tY0SGTmIjF4rn5jIRN1uTmbY71UMGDXEXBpKkfkFnESyjLrVGe5EfcI2jE3HMQIDJAnSEh4BV9YCp2uo7Y2Uv7Tcwm34tcNwrjX-chPfsSpeJgBBUZK8gHxfIgJYUBMiGsK5aTeErFRT-__BNCyQGZDnnWZQ8w61-xQg5fnGb7JxDeIMHK2AyuKrug5ftvCKW6LBXcx6uDHqe4JLKkel_iO_-O0_41_p9tp-mDdX0w7VKs6PGftV-cC9FCBPdws6ycjLvPVTPNyHwNTgCxbvsoGPJcqojeC2vpWwa3RGpNX3YoBDxwF8FS7Bl33mYrofK7G3vJIoGhWjAHg5zqLdHp9E3X1G1cO-L4t92EkUVvSMRyd3SYq8NRRiHZgbdGWt66OXMeRvcWVa4ZR3M8BUQDJhEahcs5y1WJd3BWxoRJZbqUpnlEcbog5vdXH21V2LnNQ4cUrCAXHc0xEEuSBVpJy0)
-
-@startuml
-
-    skinparam noteFontColor white
-
-    actor "Робітник" as Collaborator
-
-
-    usecase "<b>SignIn</b>\nЗареєструватися" as SignIn
-    usecase "<b>LogIn</b>\nУвійти в систему" as LogIn
-    usecase "<b>TaskManage</b>\nКерувати завданнями" as TaskManage
-    usecase "<b>EditUser</b>\nРедагувати дані користувача" as EditUser
-
-
-    Collaborator -r-> SignIn
-    Collaborator -u-> LogIn
-    Collaborator -l-> TaskManage
-    Collaborator -u-> EditUser
-
-
-
-
-    note bottom of Collaborator  #4e4e4e
-
-       Робітник може у повній мірі керувати лише <b>власними завданнями</b>
-       та на призначених йому завданнях він має можливість тільки
-       <b>змінювати статус</b> (todo/in progress/done/in rewiew).
-       Робітник може у повній мірі виконувати дії над всіма Task'ами у випадку,
-       коли в проєкті <b>НЕМАЄ ТІМЛІДА</b>
-
-    end note
-
-    actor "Тімлід" as Teamlead
-
-    usecase "<b>ProjectManage</b>\nКерувати проектом" as ProjectManage
-    usecase "<b>TeamManage</b>\nКерувати командою" as TeamManage
-
-
-    Teamlead -> ProjectManage
-    Teamlead -l-> TeamManage
-    Teamlead -u-|> Collaborator
-
-    actor "Адміністратор системи" as Admin
-
-    usecase "<b>DataManage</b>\nУправління користувачами" as UserManage
-    usecase "<b>UserSupport</b>\nВирішити проблему користувача" as UserSupport
-
-    Admin --> UserManage
-    Admin --> UserSupport
-    Admin -u-|> Teamlead
-
-@enduml
-
+![Diagram](https://www.plantuml.com/plantuml/png/dLNDQXDH5DxFKnpgGWLZDovBg8Y2e21KTsucpJMEJUQ6cGdTk4WQVroKjaXimH-GzWNIcB5fVj9NEFUD_Ev9qfdRq2uaS9bxVhvppdVEkLcF4pzA6hMg5sy5OTsF_1g5Eb5FT9WyqbKTqVRR856UvsyckApmRvxogJaqEppX0GzNo8y9XbM_f2CV9fxdDMArwSUALjPAnOsW4ZuDrrPBnTSX7t7ND3ar7TCoEwPfsjo3P8S7kEyBqipSGNYcAvS09zmpXtnkNOXxP5hM5RUKnwOj0DRQzN_fnrlF_T2lg3d8TqxpiOdFk8jB7-U49sQVnpmGhCpJ0NnS3f9NiOfcS20a5Ty_UKW1CuV4GvwYPCbohl_CNK5Vm82mF7zKY0h51G-keW45wbkILo7FSbrsoeVoFDjTAkaaqJNIRyYnfbiFbFrv7X5TRJNn68A_d99f4r_WksThv7CeODMKSgzoEqBjN-02tY0SGTmIjF4rn5jIRN1uTmbY71UMGDXEXBpKkfkFnESyjLrVGe5EfcI2jE3HMQIDJAnSEh4BV9YCp2uo7Y2Uv7Tcwm34tcNwrjX-chPfsSpeJgBBUZK8gHxfIgJYUBMiGsK5aTeErFRT-__BNCyQGZDnnWZQ8w61-xQg5fnGb7JxDeIMHK2AyuKrug5ftvCKW6LBXcx6uDHqe4JLKkel_iO_-O0_41_p9tp-mDdX0w7VKs6PGftV-cC9FCBPdws6ycjLvPVTPNyHwNTgCxbvsoGPJcqojeC2vpWwa3RGpNX3YoBDxwF8FS7Bl33mYrofK7G3vJIoGhWjAHg5zqLdHp9E3X1G1cO-L4t92EkUVvSMRyd3SYq8NRRiHZgbdGWt66OXMeRvcWVa4ZR3M8BUQDJhEahcs5y1WJd3BWxoRJZbqUpnlEcbog5vdXH21V2LnNQ4cUrCAXHc0xEEuSBVpJy0)
 
 </center>
 
@@ -78,53 +25,7 @@
 >
 
 
-@startuml
-
-    skinparam noteFontColor white
-
-    actor "Робітник" as Collaborator
-
-    usecase "<b>SignIn</b>\nРеєстрація" as SignIn
-    usecase "<b>UserSignIn</b>\nРеєстрація користувача" as UserSignIn
-    usecase "<b>UserGitHubSignIn</b>\nРеєстрація користувача за допомогою GitHub" as UserGitHubSignIn
-    usecase "<b>LogIn</b>\nВхід" as LogIn
-    usecase "<b>UserLogIn</b>\nВхід користувача" as UserLogIn
-    usecase "<b>UserGitHubLogIn</b>\nВхід користувача за допомогою GitHub" as UserGitHubLogIn
-    usecase "<b>EditUser</b>\nРедагувати дані користувача" as EditUser
-    usecase "<b>TaskManage</b>\nКерувати завданнями" as TaskManage
-    usecase "<b>CreateTask</b>\nСтворити завдання" as CreateTask
-    usecase "<b>EditTask</b>\nРедагувати завдання" as EditTask
-    usecase "<b>DeleteTask</b>\nВидалити завдання" as DeleteTask
-    usecase "<b>FilterTask</b>\nВідфільтрувати завдання" as FilterTask
-    usecase "<b>CommentTask</b>\nКоментувати завдання" as CommentTask
-
-    Collaborator -l-> SignIn
-    SignIn <.u. UserGitHubSignIn:extends
-    SignIn <.d. UserSignIn:extends
-    Collaborator -r-> LogIn
-    LogIn <.u. UserGitHubLogIn:extends
-    LogIn <.d. UserLogIn:extends
-    Collaborator --d-> EditUser
-    Collaborator -u-> TaskManage
-    TaskManage <.u. CommentTask:extends
-    TaskManage <.u. FilterTask:extends
-    TaskManage <.u. DeleteTask:extends
-    TaskManage <.u. EditTask:extends
-    TaskManage <.u. CreateTask:extends
-
-    note bottom of Collaborator #4e4e4e
-
-       Робітник може у повній мірі керувати лише <b>власними завданнями</b>
-       та на призначених йому завданнях він має можливість тільки
-       <b>змінювати статус</b> (todo/in progress/done/in rewiew).
-       <b>Фільтрувати</b> та <b>коментувати</b> робітник може <b>всі</b>
-       <b>завдання проекту</b>.
-       Робітник може у повній мірі виконувати дії над всіма Task'ами у випадку,
-       коли в проєкті <b>НЕМАЄ ТІМЛІДА</b>
-
-    end note
-
-@enduml
+![Diagram](https://www.plantuml.com/plantuml/png/fLLDJnH14Btlh-ZWGKq4BfuC8IJueOcUr9kNNgPT9opJPAOtU0HMq0C1GjOryIDHVy6wW0pWBd-X-X_vkeQb7QR39h9a9ZtLhzvxNLCrp6L6fgQrrAnbYt6oB5Ev919jr4ETc7dTrAbOUHCRLQi9_EI2GM22ljEGVjckNQS1vNGo8MGc06xAkaub80MwbQa5cIanCLEVVHutaYV9p7HzzbM2z4FRiMjstQvIpsw2Q8Sf2b0bzsMcqd7vWaveYCUSmstgO-CzzPZMvmUf7yNcSQl-dmA2Zjpj00Kvm_K7rpvmsw9WBVIzIDZ5KzsuaDwp6xPB1vp8yQ3dGCQu2eJ9lBSmvVNF7DPz4CN6ONp1mTUZ_NELTSe51mQsUzN1HZGL_XSoMtmc4zbGvmgVyKfNFJkV0G-i0PKT72DdIfzP8PrFbJJA0Sv9Vu2gNvWBaZAXpmfMmTE5gX2cvBmGuNtLL2M7UvHpxkbL3dqM3svfbCLaStBstyaibc9cgZLLwUnxwgrHIPILWL41B4C2GYc4VBTWLPL1q5Duc1VnWB36P0GHtpML_HQsBtM0VopS-6fvdIgCHSQ1V6zu6EFS5rZKjJ5wIUZNPOytxYhtnq3tk_mr5ZoHl-bGsBRW2UsxCQ9ZR02roXDrQHguFpuW1Js4u2d2QuuDLE5HSUqrCW26di0MRcTk580Vy8mUEWgx8UYOXj1kLvZSNX_M1h26ZCx8EjouE0_y5lW1ERLRS9sFD9tF8tSUq6nV7CCbkALjspNdKDmoEjBJSIAMKzr8LPPDHpfHBf2gbLYjt9wwJXNx3eYTGUchXTrFN0uw00IMkkvm_Efl8kWg2afEFdCWEh7jEoCRp8VZOx-evj1s0405-CZVw2DzfLrw9-WdRMBv1VSExVBhO0xq47TFRGuh_5l_2m00)
 
 
 </center>
