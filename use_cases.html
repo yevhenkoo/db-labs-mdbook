@@ -24,9 +24,9 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -154,141 +154,919 @@
                     <main>
                         <h1 id="Розроблення-функціональних-вимог-до-системи"><a class="header" href="#Розроблення-функціональних-вимог-до-системи">Розроблення функціональних вимог до системи</a></h1>
 <h2 id="Модель-прецедентів"><a class="header" href="#Модель-прецедентів">Модель прецедентів</a></h2>
-<p>В цьому файлі необхідно перелічити всі документи, розроблені в проекті та дати посилання на них.</p>
-<p><em>Модель прецедентів повинна містити загальні оглядові діаграми та специфікації прецедентів.</em></p>
-<p>Вбудовування зображень діаграм здійснюється з використанням сервісу <a href="https://plantuml.com/">plantuml.com</a>.</p>
-<p>В markdown-файлі використовується опис діаграми</p>
-<pre><code class="language-md">
-&lt;center style="
-    border-radius:4px;
-    border: 1px solid #cfd7e6;
-    box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
-    padding: 1em;"
-&gt;
-
-@startuml
-
-    right header
-        &lt;font size=24 color=black&gt;Package: &lt;b&gt;UCD_3.0
-    end header
-
-    title
-        &lt;font size=18 color=black&gt;UC_8. Редагувати конфігурацію порталу
-        &lt;font size=16 color=black&gt;Діаграма прецедентів
-    end title
-
-
-    actor "Користувач" as User #eeeeaa
-    
-    package UCD_1{
-        usecase "&lt;b&gt;UC_1&lt;/b&gt;\nПереглянути список \nзвітів" as UC_1 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1&lt;/b&gt;\nЗастосувати фільтр" as UC_1.1
-    usecase "&lt;b&gt;UC_1.2&lt;/b&gt;\nПереглянути метадані \nзвіту" as UC_1.2  
-    usecase "&lt;b&gt;UC_1.2.1&lt;/b&gt;\nДати оцінку звіту" as UC_1.2.1  
-    usecase "&lt;b&gt;UC_1.2.2&lt;/b&gt;\nПереглянути інформацію \nпро авторів звіту" as UC_1.2.2
-    
-    package UCD_1 {
-        usecase "&lt;b&gt;UC_4&lt;/b&gt;\nВикликати звіт" as UC_4 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1.1&lt;/b&gt;\n Використати \nпошукові теги" as UC_1.1.1  
-    usecase "&lt;b&gt;UC_1.1.2&lt;/b&gt;\n Використати \nрядок пошуку" as UC_1.1.2
-    usecase "&lt;b&gt;UC_1.1.3&lt;/b&gt;\n Використати \nавторів" as UC_1.1.3  
-    
-    
-    
-    User -&gt; UC_1
-    UC_1.1 .u.&gt; UC_1 :extends
-    UC_1.2 .u.&gt; UC_1 :extends
-    UC_4 .d.&gt; UC_1.2 :extends
-    UC_1.2 .&gt; UC_1.2 :extends
-    UC_1.2.1 .u.&gt; UC_1.2 :extends
-    UC_1.2.2 .u.&gt; UC_1.2 :extends
-    UC_1 ..&gt; UC_1.2.2 :extends
-    
-    
-    UC_1.1.1 -u-|&gt; UC_1.1
-    UC_1.1.2 -u-|&gt; UC_1.1
-    UC_1.1.3 -u-|&gt; UC_1.1
-    
-    right footer
-        Аналітичний портал. Модель прецедентів.
-        НТУУ КПІ ім.І.Сікорського
-        Киів-2020
-    end footer
-
-@enduml
-
-**Діаграма прецедентів**
-
-&lt;/center&gt;
-</code></pre>
-<p>яка буде відображена наступним чином</p>
+<h2 id="Загальна-схема"><a class="header" href="#Загальна-схема">Загальна схема</a></h2>
 <center style="
-    border-radius:4px;
-    border: 1px solid #cfd7e6;
-    box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
-    padding: 1em;"
-    >
-<pre><code class="language-plantuml">@startuml
+   border-radius:4px;
+   border: 1px solid #cfd7e6;
+   box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+   padding: 1em;"
+>
+<p>@startuml</p>
+<pre><code>skinparam noteFontColor white
 
-    right header
-        &lt;font size=24 color=black&gt;Package: &lt;b&gt;UCD_3.0
-    end header
-
-    title
-        &lt;font size=18 color=black&gt;UC_8. Редагувати конфігурацію порталу
-        &lt;font size=16 color=black&gt;Діаграма прецедентів
-    end title
+actor "Робітник" as Collaborator
 
 
-    actor "Користувач" as User #eeeeaa
-    
-    package UCD_1{
-        usecase "&lt;b&gt;UC_1&lt;/b&gt;\nПереглянути список \nзвітів" as UC_1 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1&lt;/b&gt;\nЗастосувати фільтр" as UC_1.1
-    usecase "&lt;b&gt;UC_1.2&lt;/b&gt;\nПереглянути метадані \nзвіту" as UC_1.2  
-    usecase "&lt;b&gt;UC_1.2.1&lt;/b&gt;\nДати оцінку звіту" as UC_1.2.1  
-    usecase "&lt;b&gt;UC_1.2.2&lt;/b&gt;\nПереглянути інформацію \nпро авторів звіту" as UC_1.2.2
-    
-    package UCD_1 {
-        usecase "&lt;b&gt;UC_4&lt;/b&gt;\nВикликати звіт" as UC_4 #aaeeaa
-    }
-    
-    usecase "&lt;b&gt;UC_1.1.1&lt;/b&gt;\n Використати \nпошукові теги" as UC_1.1.1  
-    usecase "&lt;b&gt;UC_1.1.2&lt;/b&gt;\n Використати \nрядок пошуку" as UC_1.1.2
-    usecase "&lt;b&gt;UC_1.1.3&lt;/b&gt;\n Використати \nавторів" as UC_1.1.3  
-    
-    
-    
-    User -&gt; UC_1
-    UC_1.1 .u.&gt; UC_1 :extends
-    UC_1.2 .u.&gt; UC_1 :extends
-    UC_4 .d.&gt; UC_1.2 :extends
-    UC_1.2 .&gt; UC_1.2 :extends
-    UC_1.2.1 .u.&gt; UC_1.2 :extends
-    UC_1.2.2 .u.&gt; UC_1.2 :extends
-    UC_1 ..&gt; UC_1.2.2 :extends
-    
-    
-    UC_1.1.1 -u-|&gt; UC_1.1
-    UC_1.1.2 -u-|&gt; UC_1.1
-    UC_1.1.3 -u-|&gt; UC_1.1
-    
-    right footer
-        Аналітичний портал. Модель прецедентів.
-        НТУУ КПІ ім.І.Сікорського
-        Киів-2020
-    end footer
+usecase "&lt;b&gt;SignIn&lt;/b&gt;\nЗареєструватися" as SignIn
+usecase "&lt;b&gt;LogIn&lt;/b&gt;\nУвійти в систему" as LogIn
+usecase "&lt;b&gt;TaskManage&lt;/b&gt;\nКерувати завданнями" as TaskManage
+usecase "&lt;b&gt;EditUser&lt;/b&gt;\nРедагувати дані користувача" as EditUser
 
-@enduml
+
+Collaborator -r-&gt; SignIn
+Collaborator -u-&gt; LogIn
+Collaborator -l-&gt; TaskManage
+Collaborator -u-&gt; EditUser
+
+
+
+
+note bottom of Collaborator  #4e4e4e
+
+   Робітник може у повній мірі керувати лише &lt;b&gt;власними завданнями&lt;/b&gt;
+   та на призначених йому завданнях він має можливість тільки
+   &lt;b&gt;змінювати статус&lt;/b&gt; (todo/in progress/done/in rewiew).
+   Робітник може у повній мірі виконувати дії над всіма Task'ами у випадку,
+   коли в проєкті &lt;b&gt;НЕМАЄ ТІМЛІДА&lt;/b&gt;
+
+end note
+
+actor "Тімлід" as Teamlead
+
+usecase "&lt;b&gt;ProjectManage&lt;/b&gt;\nКерувати проектом" as ProjectManage
+usecase "&lt;b&gt;TeamManage&lt;/b&gt;\nКерувати командою" as TeamManage
+
+
+Teamlead -&gt; ProjectManage
+Teamlead -l-&gt; TeamManage
+Teamlead -u-|&gt; Collaborator
+
+actor "Адміністратор системи" as Admin
+
+usecase "&lt;b&gt;DataManage&lt;/b&gt;\nУправління користувачами" as UserManage
+usecase "&lt;b&gt;UserSupport&lt;/b&gt;\nВирішити проблему користувача" as UserSupport
+
+Admin --&gt; UserManage
+Admin --&gt; UserSupport
+Admin -u-|&gt; Teamlead
 </code></pre>
-<p><strong>Діаграма прецедентів</strong></p>
+<p>@enduml</p>
 </center>
+<h2 id="Робітник"><a class="header" href="#Робітник">Робітник</a></h2>
+<center style="
+   border-radius:4px;
+   border: 1px solid #cfd7e6;
+   box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+   padding: 1em;"
+>
+<p>@startuml</p>
+<pre><code>skinparam noteFontColor white
+
+actor "Робітник" as Collaborator
+
+usecase "&lt;b&gt;SignIn&lt;/b&gt;\nРеєстрація" as SignIn
+usecase "&lt;b&gt;UserSignIn&lt;/b&gt;\nРеєстрація користувача" as UserSignIn
+usecase "&lt;b&gt;UserGitHubSignIn&lt;/b&gt;\nРеєстрація користувача за допомогою GitHub" as UserGitHubSignIn
+usecase "&lt;b&gt;LogIn&lt;/b&gt;\nВхід" as LogIn
+usecase "&lt;b&gt;UserLogIn&lt;/b&gt;\nВхід користувача" as UserLogIn
+usecase "&lt;b&gt;UserGitHubLogIn&lt;/b&gt;\nВхід користувача за допомогою GitHub" as UserGitHubLogIn
+usecase "&lt;b&gt;EditUser&lt;/b&gt;\nРедагувати дані користувача" as EditUser
+usecase "&lt;b&gt;TaskManage&lt;/b&gt;\nКерувати завданнями" as TaskManage
+usecase "&lt;b&gt;CreateTask&lt;/b&gt;\nСтворити завдання" as CreateTask
+usecase "&lt;b&gt;EditTask&lt;/b&gt;\nРедагувати завдання" as EditTask
+usecase "&lt;b&gt;DeleteTask&lt;/b&gt;\nВидалити завдання" as DeleteTask
+usecase "&lt;b&gt;FilterTask&lt;/b&gt;\nВідфільтрувати завдання" as FilterTask
+usecase "&lt;b&gt;CommentTask&lt;/b&gt;\nКоментувати завдання" as CommentTask
+
+Collaborator -l-&gt; SignIn
+SignIn &lt;.u. UserGitHubSignIn:extends
+SignIn &lt;.d. UserSignIn:extends
+Collaborator -r-&gt; LogIn
+LogIn &lt;.u. UserGitHubLogIn:extends
+LogIn &lt;.d. UserLogIn:extends
+Collaborator --d-&gt; EditUser
+Collaborator -u-&gt; TaskManage
+TaskManage &lt;.u. CommentTask:extends
+TaskManage &lt;.u. FilterTask:extends
+TaskManage &lt;.u. DeleteTask:extends
+TaskManage &lt;.u. EditTask:extends
+TaskManage &lt;.u. CreateTask:extends
+
+note bottom of Collaborator #4e4e4e
+
+   Робітник може у повній мірі керувати лише &lt;b&gt;власними завданнями&lt;/b&gt;
+   та на призначених йому завданнях він має можливість тільки
+   &lt;b&gt;змінювати статус&lt;/b&gt; (todo/in progress/done/in rewiew).
+   &lt;b&gt;Фільтрувати&lt;/b&gt; та &lt;b&gt;коментувати&lt;/b&gt; робітник може &lt;b&gt;всі&lt;/b&gt;
+   &lt;b&gt;завдання проекту&lt;/b&gt;.
+   Робітник може у повній мірі виконувати дії над всіма Task'ами у випадку,
+   коли в проєкті &lt;b&gt;НЕМАЄ ТІМЛІДА&lt;/b&gt;
+
+end note
+</code></pre>
+<p>@enduml</p>
+</center>
+<h2 id="Тімлід"><a class="header" href="#Тімлід">Тімлід</a></h2>
+<center style="
+   border-radius:4px;
+   border: 1px solid #cfd7e6;
+   box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+   padding: 1em;"
+>
+<p>@startuml</p>
+<pre><code>actor "Тімлід" as Lead
+
+usecase "&lt;b&gt;TeamManage&lt;/b&gt;\nКерувати командою" as TeamManage
+usecase "&lt;b&gt;AddMember&lt;/b&gt;\nДодати користувача" as AddMember
+usecase "&lt;b&gt;DeleteMember&lt;/b&gt;\nВидалити користувача" as DeleteMember
+
+usecase "&lt;b&gt;ProjectManage&lt;/b&gt;\nКерувати проєктом" as ProjectManage
+usecase "&lt;b&gt;CreateProject&lt;/b&gt;\nСтворити проект" as CreateProject
+usecase "&lt;b&gt;DeleteProject&lt;/b&gt;\nВидалити проект" as DeleteProject
+
+usecase "&lt;b&gt;SprintManage&lt;/b&gt;\nКерувати Спрінтом" as SprintManage
+usecase "&lt;b&gt;CreateSprint&lt;/b&gt;\nСтворити спринт" as CreateSprint
+usecase "&lt;b&gt;FinishSprint&lt;/b&gt;\nЗавершити спринт" as FinishSprint
+
+Lead -d-&gt; TeamManage
+AddMember .u.&gt; TeamManage:extends
+DeleteMember .u.&gt; TeamManage:extends
+
+Lead -u-&gt; ProjectManage
+CreateProject .u.&gt; ProjectManage:extends
+DeleteProject .u.&gt; ProjectManage:extends
+
+Lead -u-&gt; SprintManage
+CreateSprint .u.&gt; SprintManage:extends
+FinishSprint .u.&gt; SprintManage:extends
+</code></pre>
+<p>@enduml</p>
+</center>
+<h2 id="Адміністратор-системи"><a class="header" href="#Адміністратор-системи">Адміністратор системи</a></h2>
+<center style="
+   border-radius:4px;
+   border: 1px solid #cfd7e6;
+   box-shadow: 0 1px 3px 0 rgba(89,105,129,.05), 0 1px 1px 0 rgba(0,0,0,.025);
+   padding: 1em;"
+>
+<p>@startuml</p>
+<pre><code>actor "Адміністратор системи" as Admin
+usecase "&lt;b&gt;DataManage&lt;/b&gt;\nКерувати даними системи" as DataManage
+usecase "&lt;b&gt;BanUser&lt;/b&gt;\nЗаблокувати користувача" as BanUser
+usecase "&lt;b&gt;UnBanUser&lt;/b&gt;\nРозблокувати користувача" as UnBanUser
+usecase "&lt;b&gt;UserSupport&lt;/b&gt;\nВирішити проблему користувача" as UserSupport
+
+Admin -d-&gt; DataManage
+Admin -u-&gt; UserSupport
+BanUser .u.&gt; DataManage:extends
+UnBanUser .u.&gt; DataManage:extends
+</code></pre>
+<p>@enduml</p>
+</center>
+<h2 id="Сценарії-використання"><a class="header" href="#Сценарії-використання">Сценарії використання</a></h2>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UserSignIn><code>UserSignIn</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Зареєструвати користувача (Sign In)</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або розробник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач не має облікового запису  в системі</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Створений обліковий запис користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не заповнив усі обов'язкові поля форми для реєстрації <font color="red">NullReferenceException</font><br> Обліковий запис вже існує у системі <font color="red">UserAlreadyExistsException</font><br> Користувач увів пароль, який не відповідає всім вимогам "надійного паролю" (A-Z, a-z, 0-9, !-*, мінімум 8 символів) <font color="red">NotStrongPasswordException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Створити обліковий запис";
+
+|Система|
+    : Виводить форму реєстрації;
+
+|Користувач|
+: Вводить реєстраційні дані;
+: Натискає кнопку "Зареєструватися";
+note right #ffaaaa
+&lt;b&gt; Можливі
+&lt;b&gt; NullReferenceException
+&lt;b&gt; NotStrongPasswordException
+end note
+
+|Система|
+: Перевіряє наявність облікового запису користувача;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserAlreadyExistsException
+end note
+
+: Створює новий обліковий запис;
+
+|Користувач|
+: Переходить у щойностворений обліковий запис;
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UserGitHubSignIn><code>UserGitHubSignIn</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Зареєструвати користувача (Sign In) за допомогою GitHubApi</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або розробник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач не має облікового запису в системі</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Створений обліковий запис користувача (через інформацію, отриману з GitHub профілю користувача)</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не має облікового запису GitHub (У даному випадку помилки обробляються самим GitHubApi)<br> Обліковий запис (створений за допомогою GitHubApi) вже існує в системі <font color="red">UserAlreadyExistsException</font><br></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Створити обліковий запис";
+
+ |Система|
+    : Виводить форму реєстрації;
+
+|Користувач|
+: Обирає варіант "Зареєструватися за допомогою GitHub";
+: Натискає на свій обліковий запис GitHub \n (або вводить дані облікового запису в GitHubApi);
+
+|Система|
+: Перевіряє наявність облікового запису користувача;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserAlreadyExistsException
+end note
+
+: Створює новий обліковий запис;
+
+|Користувач|
+: Переходить у щойностворений обліковий запис;
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UserLogIn><code>UserLogIn</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Авторизувати користувача (Log In)</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач зареєстрований у системі<br>- Користувач не авторизований у системі</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Новий сеанс роботи користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">У формі авторизації не заповнені одне, або більше полів <font color="red">NullReferenceException</font><br>Користувач не зареєстрований у системі <font color="red">NullInstanceException</font><br>Користувач ввів неправильний пароль <font color="red">WrongPasswordException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+
+ |Система|
+    : Виводить форму авторизації;
+
+|Користувач|
+: Вводить дані авторизації;
+: Натискає кнопку "Увійти";
+note right #ffaaaa
+&lt;b&gt; Можлива NullReferenceException
+end note
+
+|Система|
+: Перевіряє наявність облікового запису користувача;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NullInstanceException
+end note
+
+: Перевіряє отримані дані, введені користувачем;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; WrongPasswordException
+end note
+: Авторизує користувача;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UserGitHubLogIn><code>UserGitHubLogIn</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Авторизувати користувача (Log In) за допомогою GitHubApi</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач зареєстрований у системі (за допомогою GitHubApi)<br>- Користувач не авторизований у системі</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Новий сеанс роботи користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не зареєстрований у системі <font color="red">NullInstanceException</font><br> Облікового запису GitHub не існує (У даному випадку помилки обробляються самим GitHubApi)</td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+
+|Система|
+    : Виводить форму авторизації;
+
+|Користувач|
+: Натискає на "Увійти за допомогою GitHub";
+: Натискає на свій обліковий запис GitHub \n (або вводить дані облікового запису в GitHubApi);
+
+|Система|
+: Перевіряє наявність облікового запису користувача;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NullInstanceException
+end note
+
+: Авторизує користувача;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=EditUser><code>EditUser</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Редагувати дані користувача</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (адміністратор системи, тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач зареєстрований у системі з даними, введеним при реєстрації (що б змінити дані користувача, який реєструвався за допомогою GitHubApi, йому потрібно змінити ці дані у самому GitHub)<br>- Користувач бажає змінити дані облікового запису<br>- Користувач авторизований у системі</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Користувач має відредагований профіль</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач змінив пароль на інший, який не відповідає всім вимогам "надійного паролю" (A-Z, a-z, 0-9, !-*, мінімум 8 символів) <font color="red">NotStrongPasswordException</font><br> Користувач змінив дані у будь-якому полі на пусті (null) <font color="red">NullReferenceException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає на "Редагувати профіль";
+
+|Система|
+    :відкриває форму для редагування профілю;
+
+|Користувач|
+: Обирає потрібне йому поле для зміни \n (Ім'я, Прізвище, Вік, Стать, Компанія, Місце навчання, Пароль);
+: Змінює дані у будь-якому із цих полів і \n натискає на кнопку "Зберегти зміни";
+note right #ffaaaa
+&lt;b&gt; Можливі
+&lt;b&gt; NotStrongPasswordException та
+&lt;b&gt; NullReferenceException
+end note
+
+|Система|
+: Записує зміни у профіль користувача;
+
+|Користувач|
+: Переходить до оновленого облікового запису;
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=CreateTask><code>CreateTask</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Створити завдання</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Користувач обрав проект</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Завдання створене</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">У формі створення завдання не заповнені обов'язкові поля <font color="red">NoEssentialDataException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Створити завдання";
+
+|Система|
+    : Виводить форму для створення завдання;
+
+|Користувач|
+: Вводить назву завдання (обов'язково),\n опис, статус (todo/in progress/done/in review), \nкому призначене завдання, дедлайн;
+: Натискає кнопку "Створити";
+
+
+|Система|
+: Перевіряє наявність обов'язкових полів;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NoEssentialDataException
+end note
+: Створює і відображає завдання у відповідному розділі проєкту;
+: Повідомляє інформацію про завдання користувачам,\n яким воно було призначене;
+
+ |Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=EditTask><code>EditTask</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Редагувати завдання</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Користувач обрав завдання</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Завдання відредаговане</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">У формі редагування завдання не заповнені обов'язкові поля <font color="red">NoEssentialDataException</font><br>Під час редагування, завдання було видалено <font color="red">TaskNotExistException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Редагувати завдання";
+
+|Система|
+    : Виводить форму для редагування завдання;
+
+|Користувач|
+: Редагує завдання;
+: Натискає кнопку "Зберегти";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; TaskNotExistException
+end note
+
+
+|Система|
+: Перевіряє наявність обов'язкових полів;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NoEssentialDataException
+end note
+: Зберігає внесені користувачем зміни та \n відображає відредаговане завдання;
+: Повідомляє інформацію про завдання користувачам, \n яким воно було призначене;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=DeleteTask><code>DeleteTask</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Видалити завдання</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Користувач обрав завдання</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Завдання видалене</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач натиснув кнопку "Скасувати" <font color="red">CancelException</font><br>Користувач не має прав на видалення цього завдання <font color="red">AccessDeniedException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Видалити завдання";
+
+|Система|
+    : Виводить вікно для підтвердження видалення;
+
+|Користувач|
+: Натискає кнопку "Підтвердити";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; CancelException
+end note
+
+
+|Система|
+: Видаляє завдання;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; AccessDeniedException
+end note
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=FilterTask><code>FilterTask</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Відфільтрувати завдання</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Користувач обрав проєкт<br></td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Відфільтровані завдання</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">У проєкті нема жодних завдань <font color="red">NoTasksException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Використати фільтр";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NoTasksException
+end note
+
+|Система|
+    : Виводить вікно для встановлення фільтрів;
+
+|Користувач|
+: Обирає параметри для фільтрування;
+: Натискає кнопку "Підтвердити";
+
+|Система|
+: Відображає відфільтровані завдання;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=CommentTask><code>CommentTask</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Коментувати завдання</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Користувач обрав проект<br>- Користувач обрав завдання</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Коментар до завдання</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Під час написання коментарію завдання було видалене <font color="red">TaskNoExistException</font><br>Користувач скасував операцію <font color="red">CancelCommentException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає кнопку "Додати коментар";
+
+|Система|
+    : Виводить вікно для додання коментарів;
+
+|Користувач|
+: Пише коментар;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; CancelCommentException
+end note
+: Натискає кнопку "Надіслати";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; TaskNoExistException
+end note
+
+|Система|
+: Зберігає коментар;
+: Повідомляє інших учасників цього завдання \n про новий коментар;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=CreateProject><code>CreateProject</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Створити проєкт</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br></td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Новий проєкт</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Проєкт з таким іменем вже створений <font color="red">NotUniqueProjectName</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+    : Виводить вікно управління проєктами;
+
+|Користувач|
+: Натискає кнопку "Створити новий проєкт";
+
+|Система|
+: Виводить форму для створення нового проєкту;
+
+|Користувач|
+: Заповнює поля з інформацією проєкту;
+: Натискає кнопку "Створити";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NotUniqueProjectName
+end note
+
+|Система|
+: Створює проєкт;
+: Відкриває новостворений проект;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=DeleteProject><code>DeleteProject</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Видалити проєкт</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Проєкт не був видалений до цього</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Проєкт є видалений</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не проходить перевірку на підтвердження вибору (Captcha) <font color="red">NotConfirmedActionException</font><br> Користувач натиснув кнопку скасувати <font color="red">CancelException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+    : Виводить вікно управління проєктами;
+
+|Користувач|
+: Обирає меню дій над потрібним проєктом;
+
+|Система|
+: Виводить меню дій над проєктом;
+
+|Користувач|
+: Натискає кнопку "Видалити проект";
+
+|Система|
+: Відкриває вікно з підтвердженням видалення;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NotConfirmedActionException,
+&lt;b&gt; CancelException
+end note
+
+|Користувач|
+: Натискає кнопку "Видалити";
+
+|Система|
+: Видаляє проєкт;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=AddMember><code>AddMember</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Додати робітника до проєкту</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br> - Користувач обрав проект<br> - Користувач має необхідні права доступу до функціоналу системи</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Користувач стає учасником проєкту</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Такого користувача не існує <font color="red">UserNotExistException</font>  <br> Користувач вже є учасником проєкту <font color="red">UserAlreadyProjectMemberException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+    : Виводить вікно управління проєктами;
+
+|Користувач|
+: Обирає меню дій над потрібним проєктом;
+
+|Система|
+: Виводить меню дій над проєктом;
+
+|Користувач|
+: Натискає кнопку "Додати робітника";
+
+|Система|
+: Відкриває вікно з інформаційними полями;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserAlreadyProjectMemberException,
+&lt;b&gt; UserNotExistException
+end note
+
+|Користувач|
+: Натискає кнопку "Додати";
+
+|Система|
+: Додає учасника;
+: Відображає користувача у списку учасників проекту;
+
+|Користувач|
+    stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=DeleteMember><code>DeleteMember</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Видалити робітника з проєкту</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br> - Користувач має необхідні права доступу до функціоналу системи <br> - Існують інші учасники проекту</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Користувач більше не учасник проєкту</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Натиснута кнопка "Скасувати" <font color="red">CancelDeleteMemberException</font>  <br> Користувач не є робітником проєкту <font color="red">UserIsNotProjectMemberException</font></td></tr>
+<tr><td style="text-align: left">@startuml</td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+: Виводить вікно управління проєктами;
+
+|Користувач|
+: Обирає меню дій над потрібним проєктом;
+
+|Система|
+: Виводить меню дій над проєктом;
+
+|Користувач|
+: Натискає кнопку "Видалити робітника";
+
+|Система|
+: Відкриває вікно з інформаційними полями;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserIsNotProjectMemberException,
+&lt;b&gt; CancelDeleteMemberException
+end note
+
+|Користувач|
+: Підтверджує видалення учасника;
+
+|Система|
+: Не відображає користувача у списку учасників проекту;
+
+|Користувач|
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=CreateSprint><code>CreateSprint</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Створити [Sprint]</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br>- Попередній Спрінт вже закінчився</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Спринт створений</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Номер/назва Спрінта не є унікальною <font color="red">NotUniqueSpringNameException</font> <br> Натиснута кнопка "Скасувати" <font color="red">CancelException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+: Виводить вікно управління проєктами;
+
+|Користувач|
+: Обирає меню дій над потрібним проєктом;
+
+|Система|
+: Виводить меню дій над проєктом; 
+
+|Користувач|
+: Натискає кнопку "Створити та почати новий Спрінт";
+
+|Система|
+: Відкриває вікно з інформаційними полями;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NotUniqueSpringNameException,
+&lt;b&gt; CancelException
+end note
+
+|Користувач|
+: Заповнює поля;
+
+|Система|
+: Повідомляє учасникам спринту інформацію про спринт;
+
+|Користувач|
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=FinishSprint><code>FinishSprint</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Закінчити [Sprint]</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (тімлід), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач авторизований<br> - Поточний Спрінт вже наближається до кінця</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Спрінт закінчений</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не проходить перевірку на підтвердження вибору (Captcha) <font color="red">NotConfirmedActionException</font> <br> Натиснута кнопка "Скасувати" <font color="red">CancelException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Заходить в меню управління проєктами;
+
+|Система|
+: Виводить вікно управління проєктами;
+
+|Користувач|
+: Обирає меню дій над потрібним проєктом;
+
+|Система|
+: Виводить меню дій над проєктом;
+
+|Користувач|
+: Натискає кнопку "Закінчити Спрінт";
+
+|Система|
+: Відкриває вікно з підтвердженням вибору;
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NotConfirmedActionException,
+&lt;b&gt; CancelException
+end note
+
+|Користувач|
+: Виконує підтвердження;
+
+|Система|
+: Повідомляє учасників спринта про його завершення;   
+
+|Користувач|
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=BanUser><code>BanUser</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Блокувати користувача</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (адміністратор системи, тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач порушив угоди використання програмного забезпечення<br>- Забезпечення безпеки системи</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Блокування користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувача вже заблоковано <font color="red">UserIsBannedException</font><br> Користувача з введеними даними не існує <font color="red">NullInstanceException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Адміністратор|
+start;
+: Отримав достатню кількість скарг для огляду діяльності користувача;
+
+|Адміністратор|
+:Робить висновок щодо блокування користувача;
+
+|Адміністратор|
+:Натискає на кнопку "Дії з користувачем";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NullInstanceException
+end note
+
+|Система|
+: Виводить вікно управління користувачами;
+
+|Адміністратор|
+: Натискає на кнопку "Заблокувати користувача";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserIsBannedException
+end note
+
+|Система|
+: Відкриває вікно з формою для блокування;
+
+|Адміністратор|
+: Заповнює форму для блокування (причина, тривалість);
+
+|Система|
+: Відкриває вікно з підтвердженням вибору;
+
+|Адміністратор|
+: Натискає на "Заблокувати користувача";
+
+|Система|
+: Блокує користувача та надсилає йому інформацію про блокування;
+
+|Адміністратор|
+:Оцінює результат блокування;
+
+|Адміністратор|
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UnBanUser><code>UnBanUser</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Розблокувати користувача</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (адміністратор системи, тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач заблокований</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Розблокування профілю користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувача вже розблоковано <font color="red">UserIsUnBannedException</font><br> Користувача з введеними даними не існує <font color="red">NullInstanceException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Адміністратор|
+start;
+: Знаходить заблокованого користувача;
+
+|Адміністратор|
+:Визначає причину розблокування;
+
+|Адміністратор|
+:Натискає на кнопку "Дії з користувачем";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; NullInstanceException
+end note
+
+|Система|
+: Виводить вікно управління користувачами;
+
+|Адміністратор|
+: Натискає на "Розблокувати користувача";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserIsUnBannedException
+end note
+
+|Система|
+: Розблоковує доступ користувачу та повідомляє йому інформацію \n про розблокування (надіславши лист на пошту);
+
+|Адміністратор|
+:Оцінює результат розблокування;   
+
+|Адміністратор|
+stop;
+</code></pre>
+<p>@enduml</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">ID</th><th style="text-align: left"><span id=UserSupport><code>UserSupport</code></span></th></tr></thead><tbody>
+<tr><td style="text-align: left">Назва:</td><td style="text-align: left">Вирішити проблему користувача</td></tr>
+<tr><td style="text-align: left">Учасники:</td><td style="text-align: left">Користувач (адміністратор системи, тімлід, або робітник), система</td></tr>
+<tr><td style="text-align: left">Передумови:</td><td style="text-align: left">- Користувач бажає написати повідомлення до технічної підтримки</td></tr>
+<tr><td style="text-align: left">Результат:</td><td style="text-align: left">Вирішення проблеми користувача</td></tr>
+<tr><td style="text-align: left">Виключні ситуації:</td><td style="text-align: left">Користувач не авторизований в системі <font color="red">UserIsNotLoggedInException</font></td></tr>
+</tbody></table>
+</div>
+<p>@startuml</p>
+<pre><code>|Користувач|
+start;
+: Натискає на "Користувацька підтримка";
+
+|Система|
+: Перекидає користувача на сторінку F.A.Q.;
+
+|Користувач|
+: Натискає на "Звʼязатися з адміністрацією";
+note right #ffaaaa
+&lt;b&gt; Можлива
+&lt;b&gt; UserIsNotLoggedInException
+end note
+
+|Система|
+: Відкриває вікно з формою для написання повідомлення;
+
+|Користувач|
+: Пише повідомлення й надсилає його;
+
+|Система|
+: Надсилає це повідомлення до профілю адміністрації;
+
+|Адміністратор|
+:Вирішує проблему користувача;
+
+|Користувач|
+stop;
+</code></pre>
+<p>@enduml</p>
 
                     </main>
 
