@@ -63,25 +63,25 @@
 ## Сценарії використання
 
 
-| **ID**                | `UserSignIn` |
+| **ID**                | `UserSignUp` |
 |-----------------------|--------------|
-| **Назва:**           | Реєстрація користувача (Sign In) |
+| **Назва:**           | Реєстрація користувача (Sign Up) |
 | **Учасники:**        | Користувач (робітник, тімлід  або адміністратор), система |
 | **Передумови:**      | Користувач не має облікового запису в системі |
 | **Результат:**       | Створено новий обліковий запис користувача |
 | **Виключні ситуації:** | - Якщо не заповнені обов'язкові поля реєстрації — `NullReferenceException`<br>- Якщо обліковий запис уже існує — `UserAlreadyExistsException`<br>- Якщо пароль не відповідає вимогам безпеки (A-Z, a-z, 0-9, !-*, мінімум 8 символів) — `NotStrongPasswordException` |
 
-![UserSignIn Diagram](http://www.plantuml.com/plantuml/png/bLFTgjD04BxlKoprBOp8yUBSYYW-G3pT7WinEIHxi48ljFK7eLYGae8eqZTOez4sRRQlyCqRkRDROslHrhtPoSxizyqt--KiKs6ghfz4hPQmQu0FCFGS2tf1GngXWAOt0vToXO4BRmfyieaXbw6oqLJOhOR11XMDH1jpcomy4fS967p1Yd9KC2Ymm5BW1pGs3D4EVf7FFJ5AhA4zxPRlFHOCY6yCI6D1BntwshBPhQGftxEHfjUKqomuAeSnzn4FOB14JRcm5Pg3KxNFe7UnFAs_G9EsHuaJ9KNQktoin8rkDxJB7TzwT5lW8mo-OyM2AM-Exrv7qNtPbQcCB-Hv_q9UgLuI_qudwe5Aa_ZoNfXbJvEqiryYuuxZT1z_7JQB-uoIksTks_k4vTNGD471Ct2Indy-fy5Nc9q7jMD0TJXuwFyI3zqSFynaUYTAPTXvTjxlPIexeew5D1QaTrx4rdZ_zgBlyAXvcZdHgnqBiHdVmc39R7pBDu0IzQdCcKgkWjQPLMJ_oPy0)
+![UserSignUp Diagram](http://www.plantuml.com/plantuml/png/bLFTgjD04BxlKoprBOp8yUBSYYW-G3pT7WinEIHxi48ljFK7eLYGae8eqZTOez4sRRQlyCqRkRDROslHrhtPoSxizyqt--KiKs6ghfz4hPQmQu0FCFGS2tf1GngXWAOt0vToXO4BRmfyieaXbw6oqLJOhOR11XMDH1jpcomy4fS967p1Yd9KC2Ymm5BW1pGs3D4EVf7FFJ5AhA4zxPRlFHOCY6yCI6D1BntwshBPhQGftxEHfjUKqomuAeSnzn4FOB14JRcm5Pg3KxNFe7UnFAs_G9EsHuaJ9KNQktoin8rkDxJB7TzwT5lW8mo-OyM2AM-Exrv7qNtPbQcCB-Hv_q9UgLuI_qudwe5Aa_ZoNfXbJvEqiryYuuxZT1z_7JQB-uoIksTks_k4vTNGD471Ct2Indy-fy5Nc9q7jMD0TJXuwFyI3zqSFynaUYTAPTXvTjxlPIexeew5D1QaTrx4rdZ_zgBlyAXvcZdHgnqBiHdVmc39R7pBDu0IzQdCcKgkWjQPLMJ_oPy0)
 
-| **ID**                | `UserGitHubSignIn` |
+| **ID**                | `UserGitHubSignUp` |
 |-----------------------|--------------------|
-| **Назва:**           | Реєстрація користувача (Sign In) за допомогою GitHub API |
+| **Назва:**           | Реєстрація користувача (Sign Up) за допомогою GitHub API |
 | **Учасники:**        | Користувач (робітник, тімлід  або адміністратор), система |
 | **Передумови:**      | Користувач не має облікового запису в системі |
 | **Результат:**       | Створено обліковий запис користувача (на основі інформації з GitHub профілю користувача) |
 | **Виключні ситуації:** | - Користувач не має облікового запису GitHub (помилки обробляє GitHub API)<br>- Обліковий запис (створений через GitHub API) уже існує в системі — `UserAlreadyExistsException` |
 
-![UserGitHubSignIn Diagram](http://www.plantuml.com/plantuml/png/ZLFRIZ9H5BxtAJR-Dt-la15w8VK2tNMZETQ0ZJAp1GCl9kr040eX2j41ts1hMHwSwHNMUgC-zjx8K6WE33EprrhVuMDDDf05NzRFAwcKmDMaHuevf2bVSelRD2R5jqrTqeqP_Rehw1c55g6DvdZh2JmYYkcBvjmMQHgYEBP8Q1CeZMZ1VRJ5A4nf9kYJ5Fe1aSw0tB0F3JDDQ4dAy5h21mm1aTu9Y7ml-4h3Bq67nuHxMd48CJVSvq7cJp_0VA4HAg4se4iX52gAk0KB0r99O3DiF7DNgnSG0ykubxZVGDGH1wuyh1VJwtEAC8UlCPXccsEnMEBO4_z9eJ66o6G6uDTg-pzmZ9W44hSnQU5oDNV7g4kjZHowN-4SxWawuRrhbNCNw2340FYtePt_Zf-KuVUgqX6-UtecnRzokO1B7-yLzmKz0Uo35aW48wlZey3nSnNVAPGkyWqta46-SUBKf5lrT8lZbJIeTMUCh3QHEyQ43NfpzaRXvXLAviJNoTN4IjxXUqPWmvGLW3IZRPa3MQrXXREmX7_p6m00)
+![UserGitHubSignUp Diagram](http://www.plantuml.com/plantuml/png/ZLFRIZ9H5BxtAJR-Dt-la15w8VK2tNMZETQ0ZJAp1GCl9kr040eX2j41ts1hMHwSwHNMUgC-zjx8K6WE33EprrhVuMDDDf05NzRFAwcKmDMaHuevf2bVSelRD2R5jqrTqeqP_Rehw1c55g6DvdZh2JmYYkcBvjmMQHgYEBP8Q1CeZMZ1VRJ5A4nf9kYJ5Fe1aSw0tB0F3JDDQ4dAy5h21mm1aTu9Y7ml-4h3Bq67nuHxMd48CJVSvq7cJp_0VA4HAg4se4iX52gAk0KB0r99O3DiF7DNgnSG0ykubxZVGDGH1wuyh1VJwtEAC8UlCPXccsEnMEBO4_z9eJ66o6G6uDTg-pzmZ9W44hSnQU5oDNV7g4kjZHowN-4SxWawuRrhbNCNw2340FYtePt_Zf-KuVUgqX6-UtecnRzokO1B7-yLzmKz0Uo35aW48wlZey3nSnNVAPGkyWqta46-SUBKf5lrT8lZbJIeTMUCh3QHEyQ43NfpzaRXvXLAviJNoTN4IjxXUqPWmvGLW3IZRPa3MQrXXREmX7_p6m00)
 
 | **ID**                | `UserLogIn` |
 |-----------------------|-------------|
