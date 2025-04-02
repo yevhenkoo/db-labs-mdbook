@@ -31,10 +31,11 @@
         <!-- Custom theme stylesheets -->
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -44,8 +45,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -59,7 +60,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,8 +74,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -109,6 +111,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -191,24 +194,24 @@
 <p><img src="http://www.plantuml.com/plantuml/png/dPJDQi904CVlFiNYFVPU95XeQGljINhh9Pf50XebsK2FVj2FKorIF1Vw0cbLAjNgAyo-KMSp9AjTQy134fcFt_-_mwoLK3Y1Y5hDWbCNxO0LuGMci9HZ-95ZsPDzsOLOzc4bkqpsOAv2C8Cbp8lC2Tc9s_ByGXJokXDoLYpNx9kG1zUExpHu-QXct_hm3cl5W4zOA2foXmo-5P1eSe2fM3v2d54rmq1Neqwd7GXYmmWHNVJvXDy-p5aYjO8FM2YFSl2F48besfPArMlubpu9m1lCv6isXWUK6YRDL6Iuo-lDzRCRU-w9YwXs89p1btfDOGLhV9RuJB3kcH6LjBM8wU2gtSXaH_9UZc6QDAcuwNL7TTwfJP3sauCx-9ocvfdh2PNN0qPM31DIeFLI0RmN-mwKOhROfxp91LTXlRW9R46Bkm-eUml9RMEMQzcRLqJ_PEMIMzfeEEPtWljkc3P6gb6lFOMjfcMd-qmVn4GbOoSoM5RaKj6VD443XDACyMqYCQXRg4G3AMbwrxEjO0R_itu1" alt="Administrator Diagram" /></p>
 </center>
 <h2 id="Сценарії-використання"><a class="header" href="#Сценарії-використання">Сценарії використання</a></h2>
-<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserSignIn</code></th></tr></thead><tbody>
-<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign In)</td></tr>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserSignUp</code></th></tr></thead><tbody>
+<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign Up)</td></tr>
 <tr><td><strong>Учасники:</strong></td><td>Користувач (робітник, тімлід  або адміністратор), система</td></tr>
 <tr><td><strong>Передумови:</strong></td><td>Користувач не має облікового запису в системі</td></tr>
 <tr><td><strong>Результат:</strong></td><td>Створено новий обліковий запис користувача</td></tr>
 <tr><td><strong>Виключні ситуації:</strong></td><td>- Якщо не заповнені обов'язкові поля реєстрації — <code>NullReferenceException</code><br>- Якщо обліковий запис уже існує — <code>UserAlreadyExistsException</code><br>- Якщо пароль не відповідає вимогам безпеки (A-Z, a-z, 0-9, !-*, мінімум 8 символів) — <code>NotStrongPasswordException</code></td></tr>
 </tbody></table>
 </div>
-<p><img src="http://www.plantuml.com/plantuml/png/bLFTgjD04BxlKoprBOp8yUBSYYW-G3pT7WinEIHxi48ljFK7eLYGae8eqZTOez4sRRQlyCqRkRDROslHrhtPoSxizyqt--KiKs6ghfz4hPQmQu0FCFGS2tf1GngXWAOt0vToXO4BRmfyieaXbw6oqLJOhOR11XMDH1jpcomy4fS967p1Yd9KC2Ymm5BW1pGs3D4EVf7FFJ5AhA4zxPRlFHOCY6yCI6D1BntwshBPhQGftxEHfjUKqomuAeSnzn4FOB14JRcm5Pg3KxNFe7UnFAs_G9EsHuaJ9KNQktoin8rkDxJB7TzwT5lW8mo-OyM2AM-Exrv7qNtPbQcCB-Hv_q9UgLuI_qudwe5Aa_ZoNfXbJvEqiryYuuxZT1z_7JQB-uoIksTks_k4vTNGD471Ct2Indy-fy5Nc9q7jMD0TJXuwFyI3zqSFynaUYTAPTXvTjxlPIexeew5D1QaTrx4rdZ_zgBlyAXvcZdHgnqBiHdVmc39R7pBDu0IzQdCcKgkWjQPLMJ_oPy0" alt="UserSignIn Diagram" /></p>
-<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserGitHubSignIn</code></th></tr></thead><tbody>
-<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign In) за допомогою GitHub API</td></tr>
+<p><img src="http://www.plantuml.com/plantuml/png/bLFTgjD04BxlKoprBOp8yUBSYYW-G3pT7WinEIHxi48ljFK7eLYGae8eqZTOez4sRRQlyCqRkRDROslHrhtPoSxizyqt--KiKs6ghfz4hPQmQu0FCFGS2tf1GngXWAOt0vToXO4BRmfyieaXbw6oqLJOhOR11XMDH1jpcomy4fS967p1Yd9KC2Ymm5BW1pGs3D4EVf7FFJ5AhA4zxPRlFHOCY6yCI6D1BntwshBPhQGftxEHfjUKqomuAeSnzn4FOB14JRcm5Pg3KxNFe7UnFAs_G9EsHuaJ9KNQktoin8rkDxJB7TzwT5lW8mo-OyM2AM-Exrv7qNtPbQcCB-Hv_q9UgLuI_qudwe5Aa_ZoNfXbJvEqiryYuuxZT1z_7JQB-uoIksTks_k4vTNGD471Ct2Indy-fy5Nc9q7jMD0TJXuwFyI3zqSFynaUYTAPTXvTjxlPIexeew5D1QaTrx4rdZ_zgBlyAXvcZdHgnqBiHdVmc39R7pBDu0IzQdCcKgkWjQPLMJ_oPy0" alt="UserSignUp Diagram" /></p>
+<div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserGitHubSignUp</code></th></tr></thead><tbody>
+<tr><td><strong>Назва:</strong></td><td>Реєстрація користувача (Sign Up) за допомогою GitHub API</td></tr>
 <tr><td><strong>Учасники:</strong></td><td>Користувач (робітник, тімлід  або адміністратор), система</td></tr>
 <tr><td><strong>Передумови:</strong></td><td>Користувач не має облікового запису в системі</td></tr>
 <tr><td><strong>Результат:</strong></td><td>Створено обліковий запис користувача (на основі інформації з GitHub профілю користувача)</td></tr>
 <tr><td><strong>Виключні ситуації:</strong></td><td>- Користувач не має облікового запису GitHub (помилки обробляє GitHub API)<br>- Обліковий запис (створений через GitHub API) уже існує в системі — <code>UserAlreadyExistsException</code></td></tr>
 </tbody></table>
 </div>
-<p><img src="http://www.plantuml.com/plantuml/png/ZLFRIZ9H5BxtAJR-Dt-la15w8VK2tNMZETQ0ZJAp1GCl9kr040eX2j41ts1hMHwSwHNMUgC-zjx8K6WE33EprrhVuMDDDf05NzRFAwcKmDMaHuevf2bVSelRD2R5jqrTqeqP_Rehw1c55g6DvdZh2JmYYkcBvjmMQHgYEBP8Q1CeZMZ1VRJ5A4nf9kYJ5Fe1aSw0tB0F3JDDQ4dAy5h21mm1aTu9Y7ml-4h3Bq67nuHxMd48CJVSvq7cJp_0VA4HAg4se4iX52gAk0KB0r99O3DiF7DNgnSG0ykubxZVGDGH1wuyh1VJwtEAC8UlCPXccsEnMEBO4_z9eJ66o6G6uDTg-pzmZ9W44hSnQU5oDNV7g4kjZHowN-4SxWawuRrhbNCNw2340FYtePt_Zf-KuVUgqX6-UtecnRzokO1B7-yLzmKz0Uo35aW48wlZey3nSnNVAPGkyWqta46-SUBKf5lrT8lZbJIeTMUCh3QHEyQ43NfpzaRXvXLAviJNoTN4IjxXUqPWmvGLW3IZRPa3MQrXXREmX7_p6m00" alt="UserGitHubSignIn Diagram" /></p>
+<p><img src="http://www.plantuml.com/plantuml/png/ZLFRIZ9H5BxtAJR-Dt-la15w8VK2tNMZETQ0ZJAp1GCl9kr040eX2j41ts1hMHwSwHNMUgC-zjx8K6WE33EprrhVuMDDDf05NzRFAwcKmDMaHuevf2bVSelRD2R5jqrTqeqP_Rehw1c55g6DvdZh2JmYYkcBvjmMQHgYEBP8Q1CeZMZ1VRJ5A4nf9kYJ5Fe1aSw0tB0F3JDDQ4dAy5h21mm1aTu9Y7ml-4h3Bq67nuHxMd48CJVSvq7cJp_0VA4HAg4se4iX52gAk0KB0r99O3DiF7DNgnSG0ykubxZVGDGH1wuyh1VJwtEAC8UlCPXccsEnMEBO4_z9eJ66o6G6uDTg-pzmZ9W44hSnQU5oDNV7g4kjZHowN-4SxWawuRrhbNCNw2340FYtePt_Zf-KuVUgqX6-UtecnRzokO1B7-yLzmKz0Uo35aW48wlZey3nSnNVAPGkyWqta46-SUBKf5lrT8lZbJIeTMUCh3QHEyQ43NfpzaRXvXLAviJNoTN4IjxXUqPWmvGLW3IZRPa3MQrXXREmX7_p6m00" alt="UserGitHubSignUp Diagram" /></p>
 <div class="table-wrapper"><table><thead><tr><th><strong>ID</strong></th><th><code>UserLogIn</code></th></tr></thead><tbody>
 <tr><td><strong>Назва:</strong></td><td>Авторизація користувача (Log In)</td></tr>
 <tr><td><strong>Учасники:</strong></td><td>Користувач (робітник, тімлід  або адміністратор), система</td></tr>
