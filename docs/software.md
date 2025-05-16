@@ -160,3 +160,7 @@ ALTER TABLE "Event" ADD
 
 ```
 
+
+
+## RESTfull сервіс для управління даними
+
