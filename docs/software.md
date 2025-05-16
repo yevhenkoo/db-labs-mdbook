@@ -4,27 +4,20 @@
 
 ```sql
 
-CREATE TABLE "Description" (
-    id SERIAL PRIMARY KEY,
-    description TEXT,
-    datetime TIMESTAMPTZ DEFAULT NOW(),
-    task_id INTEGER NOT null,
-    artifact_id INTEGER NOT NULL
+CREATE TABLE "User" (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), 
+    nickname TEXT UNIQUE NOT NULL,  
+    email TEXT UNIQUE NOT NULL,   
+    password TEXT NOT NULL,   
+    photo TEXT    
 );
 
-CREATE TABLE "Artifact" (
-    id SERIAL PRIMARY KEY,
-    status TEXT,
-    datetime TIMESTAMPTZ DEFAULT NOW(),
-    task_id INTEGER NOT NULL
-);
-
-CREATE TABLE "Task" (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    creationDate TIMESTAMPTZ DEFAULT NOW(),
-    deadlineDate TIMESTAMPTZ,
-    project_id INTEGER NOT NULL   
+CREATE TABLE "User_Project" (
+    id SERIAL PRIMARY key,
+    user_id UUID NOT NULL,
+    project_id INTEGER NOT NULL,
+    role_id INTEGER,
+    team_id INTEGER
 );
 
 CREATE TABLE "Project" (
@@ -32,150 +25,138 @@ CREATE TABLE "Project" (
     name TEXT NOT NULL   
 );
 
-CREATE TABLE "Event" (
-    id SERIAL PRIMARY KEY,
-    datetime TIMESTAMPTZ DEFAULT NOW(),
-    resultState TEXT,
-    task_id INTEGER NOT NULL
-    );
-
-CREATE TABLE "Collaborator" (
-    id SERIAL PRIMARY key,
-    event_id INTEGER NOT null,
-    user_id UUID NOT null,
-    role_id INTEGER NOT null
-);
-
-CREATE TABLE "User" (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), 
-    nickname TEXT UNIQUE NOT NULL,  
-    email TEXT UNIQUE NOT NULL,   
-    password TEXT NOT NULL,   
-    photo TEXT,                    
-    team_id INTEGER NOT null      
-);
-
 CREATE TABLE "Team" (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT null,
-    project_id INTEGER NOT null
+    name TEXT NOT NULL,
+    project_id INTEGER NOT NULL
+);
+
+CREATE TABLE "Task" (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    startDate TIMESTAMPTZ DEFAULT NOW(),
+    deadlineDate TIMESTAMPTZ,
+    team_id INTEGER NOT NULL
+);
+
+CREATE TABLE "Artifact" (
+    id SERIAL PRIMARY KEY,
+    status TEXT NOT NULL,
+    comment TEXT,
+    datetime TIMESTAMPTZ DEFAULT NOW(),
+    task_id INTEGER NOT NULL
 );
 
 CREATE TABLE "Role" (
     id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
     description TEXT,
-    project_id INTEGER NOT null
-  
+    project_id INTEGER NOT NULL
 );
 
-CREATE TABLE "Permission" (
+CREATE TABLE "Role_Action" (
+    id SERIAL PRIMARY KEY,
+    role_id INTEGER NOT NULL,
+    action_id INTEGER NOT NULL
+);
+
+CREATE TABLE "Action" (
     id SERIAL PRIMARY KEY,
     action TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE "Grant"(
-    id SERIAL PRIMARY KEY,              
+CREATE TABLE "Event" (
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL,
     role_id INTEGER NOT NULL,
-    permission_id INTEGER NOT NULL
+    action TEXT NOT NULL,
+    datetime TIMESTAMPTZ DEFAULT NOW()
 );
 
-
-
-
-ALTER TABLE "Event" ADD
-    CONSTRAINT fk_task_event
-        FOREIGN KEY(task_id)
-        REFERENCES "Task"(id)
-        ON DELETE SET NULL
-        ON UPDATE cascade;
-
-ALTER TABLE "Description" ADD
-    CONSTRAINT fk_task_description
-    FOREIGN KEY (task_id)
-    REFERENCES "Task"(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
-
-ALTER TABLE "Artifact" ADD
-    CONSTRAINT fk_task_artifact
-    FOREIGN KEY (task_id)
-    REFERENCES "Task"(id)
+ALTER TABLE "User_Project" ADD
+    CONSTRAINT fk_user_project_user
+    FOREIGN KEY(user_id)
+    REFERENCES "User"(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
 
-ALTER TABLE "Description" ADD
-    CONSTRAINT fk_artifact_description
-    FOREIGN KEY (artifact_id)
-    REFERENCES "Artifact"(id)
+ALTER TABLE "User_Project" ADD
+    CONSTRAINT fk_user_project_project
+    FOREIGN KEY(project_id)
+    REFERENCES "Project"(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
+
+ALTER TABLE "User_Project" ADD
+    CONSTRAINT fk_user_project_role
+    FOREIGN KEY(role_id)
+    REFERENCES "Role"(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
+
+ALTER TABLE "User_Project" ADD
+    CONSTRAINT fk_user_project_team
+    FOREIGN KEY(team_id)
+    REFERENCES "Team"(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
+
+ALTER TABLE "Team" ADD
+    CONSTRAINT fk_team_project
+    FOREIGN KEY (project_id)
+    REFERENCES "Project"(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
 
 ALTER TABLE "Task" ADD
-    CONSTRAINT fk_project_task
-    FOREIGN KEY (project_id)
-    REFERENCES "Project"(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
-
-ALTER TABLE "Collaborator" ADD
-    CONSTRAINT fk_event_collaborator
-    FOREIGN KEY (event_id)
-    REFERENCES "Event"(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
-
-ALTER TABLE "Collaborator" ADD
-    CONSTRAINT fk_user_collaborator
-    FOREIGN KEY (user_id)
-    REFERENCES "User"(id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
-
-ALTER TABLE "User" ADD
-    CONSTRAINT fk_team_user
+    CONSTRAINT fk_task_team
     FOREIGN KEY (team_id)
     REFERENCES "Team"(id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
     ON UPDATE CASCADE;
 
-ALTER TABLE "Team" ADD
-    CONSTRAINT fk_project_team
-    FOREIGN KEY (project_id)
-    REFERENCES "Project"(id)
-    ON DELETE RESTRICT
+ALTER TABLE "Artifact" ADD
+    CONSTRAINT fk_artifact_task
+    FOREIGN KEY (task_id)
+    REFERENCES "Task"(id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE;
 
 ALTER TABLE "Role" ADD
-    CONSTRAINT fk_project_role
+    CONSTRAINT fk_role_project
     FOREIGN KEY (project_id)
     REFERENCES "Project"(id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
     ON UPDATE CASCADE;
 
-ALTER TABLE "Collaborator" ADD
-    CONSTRAINT fk_role_collaborator
-    FOREIGN KEY (role_id)
+ALTER TABLE "Role_Action" ADD
+    CONSTRAINT fk_role_action_role
+    FOREIGN KEY(role_id)
     REFERENCES "Role"(id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
     ON UPDATE CASCADE;
 
-ALTER TABLE "Grant" ADD
-    CONSTRAINT fk_grant_role
-        FOREIGN KEY(role_id)
-        REFERENCES "Role"(id)
-        ON DELETE CASCADE  
-        ON UPDATE CASCADE
+ALTER TABLE "Role_Action" ADD
+    CONSTRAINT fk_role_action_action
+    FOREIGN KEY(action_id)
+    REFERENCES "Action"(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
 
-ALTER TABLE "Grant" ADD
-    CONSTRAINT fk_grant_permission
-        FOREIGN KEY(permission_id)
-        REFERENCES "Permission"(id)
-        ON DELETE CASCADE  
-        ON UPDATE CASCADE
+ALTER TABLE "Event" ADD
+    CONSTRAINT fk_event_user
+    FOREIGN KEY(user_id)
+    REFERENCES "User"(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
 
-ALTER TABLE "Grant" ADD
-    CONSTRAINT uq_role_permission UNIQUE (role_id, permission_id)
+ALTER TABLE "Event" ADD
+    CONSTRAINT fk_event_role
+    FOREIGN KEY(role_id)
+    REFERENCES "Role"(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
 
 ```
 
