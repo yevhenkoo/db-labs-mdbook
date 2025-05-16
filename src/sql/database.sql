@@ -1,9 +1,3 @@
-# Реалізація інформаційного та програмного забезпечення
-
-## SQL-скрипт для створення на початкового наповнення бази даних
-
-```sql
-
 CREATE TABLE "User" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(), 
     nickname TEXT UNIQUE NOT NULL,  
@@ -157,6 +151,3 @@ ALTER TABLE "Event" ADD
     REFERENCES "Role"(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
-
-```
-
